@@ -1,6 +1,6 @@
 {
   "name": "universal-quick-forms",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -23,13 +23,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^18.2.55",
+    "rimraf": "^5.0.5",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "react": "^18.2.0"
   },
   "dependencies": {
-    "react-dom": "^18.2.0",
-    "rimraf": "^5.0.5"
+    "react-dom": "^18.2.0"
   }
 }
