@@ -1,6 +1,6 @@
 import React, { Dispatch, useState } from "react";
-import { QuickForm } from "./QuickForm";
 import { FormGroup } from "./FormGroup";
+import { QuickForm } from "./QuickForm";
 
 interface UniversalFormProps {
   className: string;
