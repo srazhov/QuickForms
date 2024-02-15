@@ -1,6 +1,6 @@
 {
-  "name": "quick-forms",
-  "version": "1.0.0",
+  "name": "universal-quick-forms",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -13,17 +13,23 @@
     }
   },
   "scripts": {
-    "build": "tsc"
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "preversion": "npm run build",
+    "version": "npm publish"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/react": "^18.2.55",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "react": "^18.2.0"
   },
   "dependencies": {
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.5"
   }
 }
