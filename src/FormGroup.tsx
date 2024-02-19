@@ -12,10 +12,14 @@ interface FormGroupProps {
 export const FormGroup = ({
   value,
   disabled,
-  quickForm,
-  onValueChange,
   invalidMessage,
+  onValueChange,
+  quickForm,
 }: FormGroupProps) => {
+  if (!quickForm || !quickForm.type) {
+    throw new Error("quickForm or its type must not be undefined");
+  }
+
   const properties = {
     value,
     disabled,
@@ -26,6 +30,10 @@ export const FormGroup = ({
     }`,
     onChange: onValueChange,
   };
+
+  if (typeof quickForm.type === "string") {
+    return <input type={quickForm.type} {...properties} />;
+  }
 
   return React.cloneElement(quickForm.type, properties);
 };

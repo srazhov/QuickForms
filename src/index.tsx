@@ -81,7 +81,7 @@ export const UniversalForm = (
           (name: string, _) =>
             (quickForms[name as quickFormsKey] as QuickForm).display !== false
         )
-        .map((item: string, _) => (
+        .map((item: string, index: number) => (
           <FormGroup
             value={formObject[item]}
             disabled={allDisabled}
@@ -90,6 +90,7 @@ export const UniversalForm = (
             onValueChange={(val: any) => {
               onValueChange(item, val);
             }}
+            key={`qf-form-group-${index}-${item}`}
           />
         ))}
       {children}
