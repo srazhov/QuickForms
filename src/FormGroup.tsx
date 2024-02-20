@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { QuickForm } from "./QuickForm";
 
 interface FormGroupProps {
@@ -20,20 +20,50 @@ export const FormGroup = ({
     throw new Error("quickForm or its type must not be undefined");
   }
 
-  const properties = {
+  const properties: any = {
+    id: quickForm.id ?? useId(),
     value,
-    disabled,
-    placeholder: quickForm.placeholder,
-    specifics: quickForm.specifics,
-    className: `qf-form-group ${quickForm.className} ${
-      invalidMessage ? "is-invalid" : ""
-    }`,
-    onChange: onValueChange,
+    disabled: disabled || quickForm.specifics?.disabled,
   };
 
+  const className = `qf-form-group ${quickForm.className ?? ""} ${
+    invalidMessage ? "is-invalid" : ""
+  }`;
+
   if (typeof quickForm.type === "string") {
-    return <input type={quickForm.type} {...properties} />;
+    if (quickForm.specifics) {
+      for (const s in quickForm.specifics) {
+        properties[s] = quickForm.specifics[s];
+      }
+    }
+
+    const label = quickForm.label ? (
+      <label
+        className={`qf-label ${quickForm.labelClass ?? ""}`}
+        htmlFor={properties.id}
+      >
+        {quickForm.label}
+      </label>
+    ) : null;
+
+    properties.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onValueChange(e.target.value);
+    };
+
+    return (
+      <div className={className}>
+        {label}
+        <input type={quickForm.type} {...properties} />
+        {invalidMessage && (
+          <div className="invalid-feedback">{invalidMessage}</div>
+        )}
+      </div>
+    );
   }
 
+  properties.onChange = onValueChange;
+  properties.invalidMessage = invalidMessage;
+  properties.className = className;
+  properties.specifics = quickForm.specifics;
   return React.cloneElement(quickForm.type, properties);
 };
