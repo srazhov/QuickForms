@@ -26,16 +26,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormGroup = void 0;
 const react_1 = __importStar(require("react"));
 const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, }) => {
-    var _a, _b, _c, _d;
+    var _a;
     if (!quickForm || !quickForm.type) {
         throw new Error("quickForm or its type must not be undefined");
     }
     const properties = {
-        id: (_a = quickForm.id) !== null && _a !== void 0 ? _a : (0, react_1.useId)(),
+        id: quickForm.id ? quickForm.id : (0, react_1.useId)(),
         value,
-        disabled: disabled || ((_b = quickForm.specifics) === null || _b === void 0 ? void 0 : _b.disabled),
+        disabled: disabled || ((_a = quickForm.specifics) === null || _a === void 0 ? void 0 : _a.disabled),
     };
-    const className = `qf-form-group ${(_c = quickForm.className) !== null && _c !== void 0 ? _c : ""} ${invalidMessage ? "is-invalid" : ""}`;
+    const className = `qf-form-group ${quickForm.className ? quickForm.className : ""} ${invalidMessage ? "is-invalid" : ""}`;
     if (typeof quickForm.type === "string") {
         if (quickForm.specifics) {
             for (const s in quickForm.specifics) {
@@ -54,7 +54,7 @@ const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, 
                 onValueChange(e.target.value);
             };
         }
-        const label = quickForm.label ? (react_1.default.createElement("label", { className: `qf-label ${(_d = quickForm.labelClass) !== null && _d !== void 0 ? _d : ""}`, htmlFor: properties.id }, quickForm.label)) : null;
+        const label = quickForm.label ? (react_1.default.createElement("label", { className: `qf-label ${quickForm.labelClass ? quickForm.labelClass : ""}`, htmlFor: properties.id }, quickForm.label)) : null;
         return (react_1.default.createElement("div", { className: className },
             label,
             react_1.default.createElement("input", Object.assign({ type: quickForm.type }, properties)),

@@ -21,14 +21,14 @@ export const FormGroup = ({
   }
 
   const properties: any = {
-    id: quickForm.id ?? useId(),
+    id: quickForm.id ? quickForm.id : useId(),
     value,
     disabled: disabled || quickForm.specifics?.disabled,
   };
 
-  const className = `qf-form-group ${quickForm.className ?? ""} ${
-    invalidMessage ? "is-invalid" : ""
-  }`;
+  const className = `qf-form-group ${
+    quickForm.className ? quickForm.className : ""
+  } ${invalidMessage ? "is-invalid" : ""}`;
 
   if (typeof quickForm.type === "string") {
     if (quickForm.specifics) {
@@ -52,7 +52,9 @@ export const FormGroup = ({
 
     const label = quickForm.label ? (
       <label
-        className={`qf-label ${quickForm.labelClass ?? ""}`}
+        className={`qf-label ${
+          quickForm.labelClass ? quickForm.labelClass : ""
+        }`}
         htmlFor={properties.id}
       >
         {quickForm.label}

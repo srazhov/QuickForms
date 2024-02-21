@@ -170,12 +170,21 @@ it("invalidMessage is passed. Must render invalid-feedback message", () => {
   expect(invMsgLabel.textContent).toEqual("value is incorrect");
 });
 
-it("quickForm.label is passed. Must render label", () => {
+it("quickForm.label and quickForm.labelClass are passed. Must render label", () => {
+  QFLabelTester("user-defined-label-class");
+});
+
+it("quickForm.label is passed without quickForm.labelClass. Must render label", () => {
+  QFLabelTester(undefined);
+});
+
+const QFLabelTester = (labelClass) => {
   // Arrange
   const value = "testValue";
   const quickForm = {
     type: "text",
     label: "test Label text",
+    labelClass: labelClass,
   };
 
   // Act
@@ -193,7 +202,12 @@ it("quickForm.label is passed. Must render label", () => {
 
   expect(label.getAttribute("for")).toBeTruthy();
   expect(label.getAttribute("for")).toEqual(input.getAttribute("id"));
-});
+  if (labelClass) {
+    expect(label.className).toEqual("qf-label user-defined-label-class");
+  } else {
+    expect(label.className).toEqual("qf-label ");
+  }
+};
 
 it("Undefined quickForm is passed to FormGroup. Must return an error", () => {
   // Arrange

@@ -46,12 +46,12 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
             return true;
         }
         setIsValidated(true);
-        let errors;
+        let errors = {};
         if (serverErrors && serverValidationFunc) {
             errors = serverValidationFunc(serverErrors, formObject);
             console.error(serverErrors);
         }
-        else {
+        else if (clientValidationFunc) {
             errors = clientValidationFunc(formObject);
         }
         errors = errors !== null && errors !== void 0 ? errors : {};
@@ -77,7 +77,7 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
         }
         setFormObject(Object.assign(Object.assign({}, formObject), { [name]: val }));
     };
-    return (react_1.default.createElement("form", { className: `qf-universal-form ${className}`, onSubmit: onSubmitBtn, noValidate: true },
+    return (react_1.default.createElement("form", { className: `qf-universal-form ${className ? className : ""}`, onSubmit: onSubmitBtn, noValidate: true },
         Object.keys(formObject)
             .filter((name, _) => quickForms[name].display !== false)
             .map((item, index) => (react_1.default.createElement(FormGroup_1.FormGroup, { value: formObject[item], disabled: allDisabled, quickForm: quickForms[item], invalidMessage: errorMessages[item], onValueChange: (val) => {

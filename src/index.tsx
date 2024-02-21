@@ -11,43 +11,50 @@ interface UniversalFormProps {
   allDisabled: boolean;
   needsValidation: boolean;
   clientValidationFunc: (e: any) => {};
-  serverValidationFunc: (e: any) => {};
+  serverValidationFunc: (serverErrors: any, formObject: any) => {};
+  children: React.ReactNode;
 }
 
-export const UniversalForm = (
-  {
-    className = "",
-    formObject,
-    setFormObject,
-    onSubmitAsync,
-    quickForms,
-    allDisabled = false,
-    needsValidation = false,
-    clientValidationFunc,
-    serverValidationFunc,
-  }: UniversalFormProps,
-  children: React.ReactNode
-) => {
+export const UniversalForm = ({
+  className = "",
+  formObject,
+  setFormObject,
+  onSubmitAsync,
+  quickForms,
+  allDisabled = false,
+  needsValidation = false,
+  clientValidationFunc,
+  serverValidationFunc,
+  children,
+}: UniversalFormProps) => {
+  if (!quickForms || !formObject || !setFormObject) {
+    throw new Error(
+      "quickForms, formObject or setFormObject must not be undefined"
+    );
+  }
+
   const [isValidated, setIsValidated] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
 
-  const checkValidation = (errors: any) => {
+  const checkValidation = (serverErrors: any) => {
     if (!needsValidation) {
       return true;
     }
 
     setIsValidated(true);
 
-    let clientErrors: {};
-    if (errors) {
-      clientErrors = serverValidationFunc(formObject);
-    } else {
-      clientErrors = clientValidationFunc(formObject);
+    let errors = {};
+    if (serverErrors && serverValidationFunc) {
+      errors = serverValidationFunc(serverErrors, formObject);
+      console.error(serverErrors);
+    } else if (clientValidationFunc) {
+      errors = clientValidationFunc(formObject);
     }
 
-    setErrorMessages(clientErrors);
+    errors = errors ?? {};
+    setErrorMessages(errors);
 
-    return Object.keys(clientErrors).length === 0;
+    return Object.keys(errors).length === 0;
   };
 
   const onSubmitBtn = async (e: any) => {
@@ -58,7 +65,11 @@ export const UniversalForm = (
       return;
     }
 
-    await onSubmitAsync(e).catch((reason: any) => {
+    if (!onSubmitAsync) {
+      return;
+    }
+
+    await onSubmitAsync(formObject).catch((reason: any) => {
       checkValidation(reason);
     });
   };
@@ -75,7 +86,11 @@ export const UniversalForm = (
   type quickFormsKey = keyof typeof quickForms;
 
   return (
-    <form className={`qf-universal-form ${className}`} onSubmit={onSubmitBtn}>
+    <form
+      className={`qf-universal-form ${className ? className : ""}`}
+      onSubmit={onSubmitBtn}
+      noValidate
+    >
       {Object.keys(formObject)
         .filter(
           (name: string, _) =>
