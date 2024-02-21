@@ -35,23 +35,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UniversalForm = void 0;
 const react_1 = __importStar(require("react"));
 const FormGroup_1 = require("./FormGroup");
-const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsync, quickForms, allDisabled = false, needsValidation = false, clientValidationFunc, serverValidationFunc, }, children) => {
+const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsync, quickForms, allDisabled = false, needsValidation = false, clientValidationFunc, serverValidationFunc, children, }) => {
+    if (!quickForms || !formObject || !setFormObject) {
+        throw new Error("quickForms, formObject or setFormObject must not be undefined");
+    }
     const [isValidated, setIsValidated] = (0, react_1.useState)(false);
     const [errorMessages, setErrorMessages] = (0, react_1.useState)({});
-    const checkValidation = (errors) => {
+    const checkValidation = (serverErrors) => {
         if (!needsValidation) {
             return true;
         }
         setIsValidated(true);
-        let clientErrors;
-        if (errors) {
-            clientErrors = serverValidationFunc(formObject);
+        let errors;
+        if (serverErrors && serverValidationFunc) {
+            errors = serverValidationFunc(serverErrors, formObject);
+            console.error(serverErrors);
         }
         else {
-            clientErrors = clientValidationFunc(formObject);
+            errors = clientValidationFunc(formObject);
         }
-        setErrorMessages(clientErrors);
-        return Object.keys(clientErrors).length === 0;
+        errors = errors !== null && errors !== void 0 ? errors : {};
+        setErrorMessages(errors);
+        return Object.keys(errors).length === 0;
     };
     const onSubmitBtn = (e) => __awaiter(void 0, void 0, void 0, function* () {
         e.preventDefault();
@@ -59,7 +64,10 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
         if (!checkValidation(null)) {
             return;
         }
-        yield onSubmitAsync(e).catch((reason) => {
+        if (!onSubmitAsync) {
+            return;
+        }
+        yield onSubmitAsync(formObject).catch((reason) => {
             checkValidation(reason);
         });
     });
@@ -69,12 +77,12 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
         }
         setFormObject(Object.assign(Object.assign({}, formObject), { [name]: val }));
     };
-    return (react_1.default.createElement("form", { className: `qf-universal-form ${className}`, onSubmit: onSubmitBtn },
+    return (react_1.default.createElement("form", { className: `qf-universal-form ${className}`, onSubmit: onSubmitBtn, noValidate: true },
         Object.keys(formObject)
             .filter((name, _) => quickForms[name].display !== false)
-            .map((item, _) => (react_1.default.createElement(FormGroup_1.FormGroup, { value: formObject[item], disabled: allDisabled, quickForm: quickForms[item], invalidMessage: errorMessages[item], onValueChange: (val) => {
+            .map((item, index) => (react_1.default.createElement(FormGroup_1.FormGroup, { value: formObject[item], disabled: allDisabled, quickForm: quickForms[item], invalidMessage: errorMessages[item], onValueChange: (val) => {
                 onValueChange(item, val);
-            } }))),
+            }, key: `qf-form-group-${index}-${item}` }))),
         children));
 };
 exports.UniversalForm = UniversalForm;

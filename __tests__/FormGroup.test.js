@@ -26,6 +26,8 @@ it("QuickForm type of string is passed. Should render <input type=text /> with a
 
   const input = divContainer.querySelector("input");
   expect(input).toBeInTheDocument();
+  expect(input).not.toHaveAttribute("specifics");
+
   expect(input).toHaveAttribute("type", "text");
   expect(input).toHaveAttribute("value", "testValue");
   expect(input).toHaveAttribute("minLength", "3");
@@ -212,3 +214,62 @@ it("Undefined type of quickForm is passed to FormGroup. Must return an error", (
     "quickForm or its type must not be undefined"
   );
 });
+
+it("CheckBox type is passed as QuickForm. Must render it as checked and correctly update 'checked' field ", () => {
+  checkboxOrRadioBtnTest("checkbox", true);
+});
+
+it("Radio type is passed as QuickForm. Must render it as checked and correctly update 'checked' field ", () => {
+  // Radio btn's checked value cannot become false after it was initialized as true
+  checkboxOrRadioBtnTest("radio", true, false);
+});
+
+it("CheckBox type is passed as QuickForm. Must not be checked and correctly update 'checked' field ", () => {
+  checkboxOrRadioBtnTest("checkbox", false);
+});
+
+it("Radio type is passed as QuickForm. Must not be checked and correctly update 'checked' field ", () => {
+  checkboxOrRadioBtnTest("radio", false);
+});
+
+const checkboxOrRadioBtnTest = (
+  type,
+  firstValue,
+  checkForValueTriggered = true
+) => {
+  // Arrange
+  const value = firstValue;
+  const quickForm = {
+    type: type,
+  };
+
+  let valueTriggered = false;
+  const onChange = (e) => {
+    valueTriggered = true;
+  };
+
+  // Act
+  const { container } = render(
+    <FormGroup
+      value={value}
+      quickForm={quickForm}
+      onValueChange={onChange}
+    ></FormGroup>
+  );
+
+  // Assert
+  const input = container.querySelector(`input[type='${type}']`);
+  expect(input).toBeInTheDocument();
+
+  expect(input).not.toHaveAttribute("value");
+  if (firstValue == true) {
+    expect(input).toHaveAttribute("checked");
+  } else {
+    expect(input).not.toHaveAttribute("checked");
+  }
+
+  fireEvent.click(input);
+  if (checkForValueTriggered === true) {
+    expect(valueTriggered).toBe(true);
+  }
+};

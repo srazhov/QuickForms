@@ -7,5 +7,5 @@ interface FormGroupProps {
     quickForm: QuickForm;
     onValueChange: (e: any) => void;
 }
-export declare const FormGroup: ({ value, disabled, quickForm, onValueChange, invalidMessage, }: FormGroupProps) => React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+export declare const FormGroup: ({ value, disabled, invalidMessage, onValueChange, quickForm, }: FormGroupProps) => React.JSX.Element;
 export {};

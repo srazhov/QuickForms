@@ -37,6 +37,19 @@ export const FormGroup = ({
       }
     }
 
+    if (quickForm.type === "checkbox" || quickForm.type === "radio") {
+      properties.checked = properties.value;
+      delete properties.value;
+
+      properties.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onValueChange(e.target.checked);
+      };
+    } else {
+      properties.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onValueChange(e.target.value);
+      };
+    }
+
     const label = quickForm.label ? (
       <label
         className={`qf-label ${quickForm.labelClass ?? ""}`}
@@ -45,10 +58,6 @@ export const FormGroup = ({
         {quickForm.label}
       </label>
     ) : null;
-
-    properties.onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onValueChange(e.target.value);
-    };
 
     return (
       <div className={className}>
@@ -65,5 +74,6 @@ export const FormGroup = ({
   properties.invalidMessage = invalidMessage;
   properties.className = className;
   properties.specifics = quickForm.specifics;
+  properties.label = quickForm.label;
   return React.cloneElement(quickForm.type, properties);
 };

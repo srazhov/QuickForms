@@ -20,7 +20,7 @@
     "preversion": "npm run build",
     "version": "npm publish"
   },
-  "author": "",
+  "author": "Miras Srazhov",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.23.9",

@@ -8,7 +8,8 @@ interface UniversalFormProps {
     allDisabled: boolean;
     needsValidation: boolean;
     clientValidationFunc: (e: any) => {};
-    serverValidationFunc: (e: any) => {};
+    serverValidationFunc: (serverErrors: any, formObject: any) => {};
+    children: React.ReactNode;
 }
-export declare const UniversalForm: ({ className, formObject, setFormObject, onSubmitAsync, quickForms, allDisabled, needsValidation, clientValidationFunc, serverValidationFunc, }: UniversalFormProps, children: React.ReactNode) => React.JSX.Element;
+export declare const UniversalForm: ({ className, formObject, setFormObject, onSubmitAsync, quickForms, allDisabled, needsValidation, clientValidationFunc, serverValidationFunc, children, }: UniversalFormProps) => React.JSX.Element;
 export {};
