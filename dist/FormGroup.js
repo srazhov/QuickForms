@@ -35,13 +35,16 @@ const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, 
         value,
         disabled: disabled || ((_a = quickForm.specifics) === null || _a === void 0 ? void 0 : _a.disabled),
     };
-    const className = `qf-form-group ${quickForm.className ? quickForm.className : ""} ${invalidMessage ? "is-invalid" : ""}`;
+    const groupClassName = `qf-form-group ${quickForm.groupClassName ? quickForm.groupClassName : ""} ${invalidMessage ? "is-invalid" : ""}`.trim();
     if (typeof quickForm.type === "string") {
         if (quickForm.specifics) {
             for (const s in quickForm.specifics) {
                 properties[s] = quickForm.specifics[s];
             }
         }
+        properties.className = properties.className
+            ? `qf-input ${properties.className}`.trim()
+            : "qf-input";
         if (quickForm.type === "checkbox" || quickForm.type === "radio") {
             properties.checked = properties.value;
             delete properties.value;
@@ -54,15 +57,15 @@ const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, 
                 onValueChange(e.target.value);
             };
         }
-        const label = quickForm.label ? (react_1.default.createElement("label", { className: `qf-label ${quickForm.labelClass ? quickForm.labelClass : ""}`, htmlFor: properties.id }, quickForm.label)) : null;
-        return (react_1.default.createElement("div", { className: className },
+        const label = quickForm.label ? (react_1.default.createElement("label", { className: `qf-label ${quickForm.labelClass ? quickForm.labelClass : ""}`.trim(), htmlFor: properties.id }, quickForm.label)) : null;
+        return (react_1.default.createElement("div", { className: groupClassName },
             label,
             react_1.default.createElement("input", Object.assign({ type: quickForm.type }, properties)),
-            invalidMessage && (react_1.default.createElement("div", { className: "invalid-feedback" }, invalidMessage))));
+            invalidMessage && (react_1.default.createElement("div", { className: "qf-invalid-feedback" }, invalidMessage))));
     }
     properties.onChange = onValueChange;
     properties.invalidMessage = invalidMessage;
-    properties.className = className;
+    properties.className = groupClassName;
     properties.specifics = quickForm.specifics;
     properties.label = quickForm.label;
     return react_1.default.cloneElement(quickForm.type, properties);

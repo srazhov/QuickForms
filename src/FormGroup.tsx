@@ -26,9 +26,9 @@ export const FormGroup = ({
     disabled: disabled || quickForm.specifics?.disabled,
   };
 
-  const className = `qf-form-group ${
-    quickForm.className ? quickForm.className : ""
-  } ${invalidMessage ? "is-invalid" : ""}`;
+  const groupClassName = `qf-form-group ${
+    quickForm.groupClassName ? quickForm.groupClassName : ""
+  } ${invalidMessage ? "is-invalid" : ""}`.trim();
 
   if (typeof quickForm.type === "string") {
     if (quickForm.specifics) {
@@ -36,6 +36,10 @@ export const FormGroup = ({
         properties[s] = quickForm.specifics[s];
       }
     }
+
+    properties.className = properties.className
+      ? `qf-input ${properties.className}`.trim()
+      : "qf-input";
 
     if (quickForm.type === "checkbox" || quickForm.type === "radio") {
       properties.checked = properties.value;
@@ -54,7 +58,7 @@ export const FormGroup = ({
       <label
         className={`qf-label ${
           quickForm.labelClass ? quickForm.labelClass : ""
-        }`}
+        }`.trim()}
         htmlFor={properties.id}
       >
         {quickForm.label}
@@ -62,11 +66,11 @@ export const FormGroup = ({
     ) : null;
 
     return (
-      <div className={className}>
+      <div className={groupClassName}>
         {label}
         <input type={quickForm.type} {...properties} />
         {invalidMessage && (
-          <div className="invalid-feedback">{invalidMessage}</div>
+          <div className="qf-invalid-feedback">{invalidMessage}</div>
         )}
       </div>
     );
@@ -74,7 +78,7 @@ export const FormGroup = ({
 
   properties.onChange = onValueChange;
   properties.invalidMessage = invalidMessage;
-  properties.className = className;
+  properties.className = groupClassName;
   properties.specifics = quickForm.specifics;
   properties.label = quickForm.label;
   return React.cloneElement(quickForm.type, properties);

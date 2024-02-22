@@ -41,18 +41,18 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
     }
     const [isValidated, setIsValidated] = (0, react_1.useState)(false);
     const [errorMessages, setErrorMessages] = (0, react_1.useState)({});
-    const checkValidation = (serverErrors) => {
+    const checkValidation = (curFormObject, serverErrors) => {
         if (!needsValidation) {
             return true;
         }
         setIsValidated(true);
         let errors = {};
         if (serverErrors && serverValidationFunc) {
-            errors = serverValidationFunc(serverErrors, formObject);
+            errors = serverValidationFunc(serverErrors, curFormObject);
             console.error(serverErrors);
         }
         else if (clientValidationFunc) {
-            errors = clientValidationFunc(formObject);
+            errors = clientValidationFunc(curFormObject);
         }
         errors = errors !== null && errors !== void 0 ? errors : {};
         setErrorMessages(errors);
@@ -61,23 +61,24 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
     const onSubmitBtn = (e) => __awaiter(void 0, void 0, void 0, function* () {
         e.preventDefault();
         e.stopPropagation();
-        if (!checkValidation(null)) {
+        if (!checkValidation(formObject, null)) {
             return;
         }
         if (!onSubmitAsync) {
             return;
         }
         yield onSubmitAsync(formObject).catch((reason) => {
-            checkValidation(reason);
+            checkValidation(formObject, reason);
         });
     });
     const onValueChange = (name, val) => {
+        const newFormObj = Object.assign(Object.assign({}, formObject), { [name]: val });
         if (isValidated) {
-            checkValidation(null);
+            checkValidation(newFormObj, null);
         }
-        setFormObject(Object.assign(Object.assign({}, formObject), { [name]: val }));
+        setFormObject(newFormObj);
     };
-    return (react_1.default.createElement("form", { className: `qf-universal-form ${className ? className : ""}`, onSubmit: onSubmitBtn, noValidate: true },
+    return (react_1.default.createElement("form", { className: `qf-universal-form ${className ? className : ""}`.trim(), onSubmit: onSubmitBtn, noValidate: true },
         Object.keys(formObject)
             .filter((name, _) => quickForms[name].display !== false)
             .map((item, index) => (react_1.default.createElement(FormGroup_1.FormGroup, { value: formObject[item], disabled: allDisabled, quickForm: quickForms[item], invalidMessage: errorMessages[item], onValueChange: (val) => {

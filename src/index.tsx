@@ -36,7 +36,7 @@ export const UniversalForm = ({
   const [isValidated, setIsValidated] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
 
-  const checkValidation = (serverErrors: any) => {
+  const checkValidation = (curFormObject: any, serverErrors: any) => {
     if (!needsValidation) {
       return true;
     }
@@ -45,10 +45,10 @@ export const UniversalForm = ({
 
     let errors = {};
     if (serverErrors && serverValidationFunc) {
-      errors = serverValidationFunc(serverErrors, formObject);
+      errors = serverValidationFunc(serverErrors, curFormObject);
       console.error(serverErrors);
     } else if (clientValidationFunc) {
-      errors = clientValidationFunc(formObject);
+      errors = clientValidationFunc(curFormObject);
     }
 
     errors = errors ?? {};
@@ -61,7 +61,7 @@ export const UniversalForm = ({
     e.preventDefault();
     e.stopPropagation();
 
-    if (!checkValidation(null)) {
+    if (!checkValidation(formObject, null)) {
       return;
     }
 
@@ -70,16 +70,17 @@ export const UniversalForm = ({
     }
 
     await onSubmitAsync(formObject).catch((reason: any) => {
-      checkValidation(reason);
+      checkValidation(formObject, reason);
     });
   };
 
   const onValueChange = (name: string, val: any) => {
+    const newFormObj = { ...formObject, [name]: val };
     if (isValidated) {
-      checkValidation(null);
+      checkValidation(newFormObj, null);
     }
 
-    setFormObject({ ...formObject, [name]: val });
+    setFormObject(newFormObj);
   };
 
   type errorMsgKey = keyof typeof errorMessages;
@@ -87,7 +88,7 @@ export const UniversalForm = ({
 
   return (
     <form
-      className={`qf-universal-form ${className ? className : ""}`}
+      className={`qf-universal-form ${className ? className : ""}`.trim()}
       onSubmit={onSubmitBtn}
       noValidate
     >

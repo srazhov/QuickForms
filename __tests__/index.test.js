@@ -113,13 +113,13 @@ it("clientValidationFunc is passed. Must validate the object and prevent from su
     target: { value: "" },
   });
   expect(userObj).toEqual({ userName: "" });
-  expect(form.querySelector(".invalid-feedback")).not.toBeInTheDocument();
+  expect(form.querySelector(".qf-invalid-feedback")).not.toBeInTheDocument();
 
   expect(submittedTimes).toBe(0);
   const subBtn = form.querySelector("button[type='submit']");
   fireEvent.click(subBtn);
 
-  expect(form.querySelector(".invalid-feedback")).toBeInTheDocument();
+  expect(form.querySelector(".qf-invalid-feedback")).toBeInTheDocument();
   expect(submittedTimes).toBe(0);
 
   fireEvent.change(input, {
@@ -127,7 +127,7 @@ it("clientValidationFunc is passed. Must validate the object and prevent from su
   });
   fireEvent.click(subBtn);
   await new Promise((r) => setTimeout(r, 100));
-  expect(form.querySelector(".invalid-feedback")).toBeInTheDocument();
+  expect(form.querySelector(".qf-invalid-feedback")).toBeInTheDocument();
   expect(submittedTimes).toBe(0);
 
   fireEvent.change(input, {
@@ -135,7 +135,7 @@ it("clientValidationFunc is passed. Must validate the object and prevent from su
   });
   fireEvent.click(subBtn);
   await new Promise((r) => setTimeout(r, 100));
-  expect(form.querySelector(".invalid-feedback")).not.toBeInTheDocument();
+  expect(form.querySelector(".qf-invalid-feedback")).not.toBeInTheDocument();
   expect(submittedTimes).toBe(1);
 });
 
@@ -264,7 +264,7 @@ it("Must not show classname as undefined in form", () => {
   );
 
   const form = container.querySelector("form");
-  expect(form.className).toEqual("qf-universal-form ");
+  expect(form.className).toEqual("qf-universal-form");
 });
 
 it("Universal form correctly renders a button and doesn't throw an exception if Submit button is pressed while onSubmitAsync is undefined", () => {

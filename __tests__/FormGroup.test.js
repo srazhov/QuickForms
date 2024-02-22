@@ -8,7 +8,7 @@ it("QuickForm type of string is passed. Should render <input type=text /> with a
   const value = "testValue";
   const quickForm = {
     type: "text",
-    className: "test-class-name",
+    groupClassName: "test-class-name",
     specifics: { minLength: 3, required: true },
   };
 
@@ -21,7 +21,7 @@ it("QuickForm type of string is passed. Should render <input type=text /> with a
   const divContainer = container.querySelector("div");
   expect(divContainer).toHaveAttribute(
     "class",
-    "qf-form-group test-class-name "
+    "qf-form-group test-class-name"
   );
 
   const input = divContainer.querySelector("input");
@@ -47,7 +47,7 @@ it("Complex control passed into a QuickForm type. Complex text must render corre
     label: "testLabel",
     id: "testId",
     specifics: { minLength: 3, disabled: true },
-    className: "test-class-name",
+    groupClassName: "test-class-name",
   };
 
   // Act
@@ -165,7 +165,7 @@ it("invalidMessage is passed. Must render invalid-feedback message", () => {
   const divContainer = container.querySelector("div.is-invalid");
   expect(divContainer).toBeInTheDocument();
 
-  const invMsgLabel = divContainer.querySelector("div.invalid-feedback");
+  const invMsgLabel = divContainer.querySelector("div.qf-invalid-feedback");
   expect(invMsgLabel).toBeInTheDocument();
   expect(invMsgLabel.textContent).toEqual("value is incorrect");
 });
@@ -205,7 +205,41 @@ const QFLabelTester = (labelClass) => {
   if (labelClass) {
     expect(label.className).toEqual("qf-label user-defined-label-class");
   } else {
-    expect(label.className).toEqual("qf-label ");
+    expect(label.className).toEqual("qf-label");
+  }
+};
+
+it("quickForm.specifics.className is passed. Must render the className", () => {
+  QFInputClassNameTester("user-defined-input-class");
+});
+
+it("quickForm.specifics.className is NOT passed. Must render default className of the input", () => {
+  QFInputClassNameTester("user-defined-input-class");
+});
+
+const QFInputClassNameTester = (userDefClassName) => {
+  // Arrange
+  const value = "testValue";
+  const quickForm = {
+    type: "text",
+    specifics: {
+      className: userDefClassName,
+    },
+  };
+
+  // Act
+  const { container } = render(
+    <FormGroup value={value} quickForm={quickForm}></FormGroup>
+  );
+
+  // Assert
+  const input = container.querySelector("input");
+  expect(input).toHaveAttribute("value", "testValue");
+
+  if (userDefClassName) {
+    expect(input.className).toEqual("qf-input user-defined-input-class");
+  } else {
+    expect(input.className).toEqual("qf-input");
   }
 };
 
