@@ -35,7 +35,9 @@ const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, 
         value,
         disabled: disabled || ((_a = quickForm.specifics) === null || _a === void 0 ? void 0 : _a.disabled),
     };
-    const groupClassName = `qf-form-group ${quickForm.groupClassName ? quickForm.groupClassName : ""} ${invalidMessage ? "is-invalid" : ""}`.trim();
+    const groupClassName = `qf-form-group ${quickForm.groupClassName ? quickForm.groupClassName : ""} ${invalidMessage ? "is-invalid" : ""}`
+        .replace(/\s+/g, " ")
+        .trim();
     if (typeof quickForm.type === "string") {
         if (quickForm.specifics) {
             for (const s in quickForm.specifics) {
@@ -43,7 +45,7 @@ const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, 
             }
         }
         properties.className = properties.className
-            ? `qf-input ${properties.className}`.trim()
+            ? `qf-input ${properties.className}`.replace(/\s+/g, " ").trim()
             : "qf-input";
         if (quickForm.type === "checkbox" || quickForm.type === "radio") {
             properties.checked = properties.value;
@@ -57,7 +59,9 @@ const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, 
                 onValueChange(e.target.value);
             };
         }
-        const label = quickForm.label ? (react_1.default.createElement("label", { className: `qf-label ${quickForm.labelClass ? quickForm.labelClass : ""}`.trim(), htmlFor: properties.id }, quickForm.label)) : null;
+        const label = quickForm.label ? (react_1.default.createElement("label", { className: `qf-label ${quickForm.labelClass ? quickForm.labelClass : ""}`
+                .replace(/\s+/g, " ")
+                .trim(), htmlFor: properties.id }, quickForm.label)) : null;
         return (react_1.default.createElement("div", { className: groupClassName },
             label,
             react_1.default.createElement("input", Object.assign({ type: quickForm.type }, properties)),

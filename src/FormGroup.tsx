@@ -28,7 +28,9 @@ export const FormGroup = ({
 
   const groupClassName = `qf-form-group ${
     quickForm.groupClassName ? quickForm.groupClassName : ""
-  } ${invalidMessage ? "is-invalid" : ""}`.trim();
+  } ${invalidMessage ? "is-invalid" : ""}`
+    .replace(/\s+/g, " ")
+    .trim();
 
   if (typeof quickForm.type === "string") {
     if (quickForm.specifics) {
@@ -38,7 +40,7 @@ export const FormGroup = ({
     }
 
     properties.className = properties.className
-      ? `qf-input ${properties.className}`.trim()
+      ? `qf-input ${properties.className}`.replace(/\s+/g, " ").trim()
       : "qf-input";
 
     if (quickForm.type === "checkbox" || quickForm.type === "radio") {
@@ -58,7 +60,9 @@ export const FormGroup = ({
       <label
         className={`qf-label ${
           quickForm.labelClass ? quickForm.labelClass : ""
-        }`.trim()}
+        }`
+          .replace(/\s+/g, " ")
+          .trim()}
         htmlFor={properties.id}
       >
         {quickForm.label}

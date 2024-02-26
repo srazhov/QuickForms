@@ -88,7 +88,9 @@ export const UniversalForm = ({
 
   return (
     <form
-      className={`qf-universal-form ${className ? className : ""}`.trim()}
+      className={`qf-universal-form ${className ? className : ""}`
+        .replace(/\s+/g, " ")
+        .trim()}
       onSubmit={onSubmitBtn}
       noValidate
     >

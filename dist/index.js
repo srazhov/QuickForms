@@ -78,7 +78,9 @@ const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsyn
         }
         setFormObject(newFormObj);
     };
-    return (react_1.default.createElement("form", { className: `qf-universal-form ${className ? className : ""}`.trim(), onSubmit: onSubmitBtn, noValidate: true },
+    return (react_1.default.createElement("form", { className: `qf-universal-form ${className ? className : ""}`
+            .replace(/\s+/g, " ")
+            .trim(), onSubmit: onSubmitBtn, noValidate: true },
         Object.keys(formObject)
             .filter((name, _) => quickForms[name].display !== false)
             .map((item, index) => (react_1.default.createElement(FormGroup_1.FormGroup, { value: formObject[item], disabled: allDisabled, quickForm: quickForms[item], invalidMessage: errorMessages[item], onValueChange: (val) => {

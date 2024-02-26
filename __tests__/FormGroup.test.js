@@ -163,6 +163,7 @@ it("invalidMessage is passed. Must render invalid-feedback message", () => {
   expect(input).toHaveAttribute("value", "incorrect value");
 
   const divContainer = container.querySelector("div.is-invalid");
+  expect(divContainer.className).toEqual("qf-form-group is-invalid");
   expect(divContainer).toBeInTheDocument();
 
   const invMsgLabel = divContainer.querySelector("div.qf-invalid-feedback");
