@@ -1,6 +1,6 @@
 import { expect } from "@jest/globals";
 import "@testing-library/jest-dom";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { UniversalForm } from "../src/index";
 
 it("Correct test of Everything in Universal Form", () => {

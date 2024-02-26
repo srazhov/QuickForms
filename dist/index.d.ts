@@ -1,4 +1,5 @@
 import React, { Dispatch } from "react";
+import "./css/universal-form.css";
 interface UniversalFormProps {
     className: string;
     formObject: any;

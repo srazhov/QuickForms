@@ -1,6 +1,6 @@
 {
   "name": "universal-quick-forms",
-  "version": "1.0.5",
+  "version": "1.2.0",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -14,8 +14,9 @@
   },
   "scripts": {
     "test": "jest --env=jsdom --coverage --silent",
-    "clean": "rimraf dist",
-    "prebuild": "npm run clean",
+    "clean": "rimraf dist/*",
+    "copy-css-files": "copyfiles -u 1 src/css/*.css dist/",
+    "prebuild": "npm run clean && npm run copy-css-files",
     "build": "tsc",
     "preversion": "npm run build",
     "version": "npm publish"
@@ -28,6 +29,7 @@
     "@babel/preset-typescript": "^7.23.3",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
+    "copyfiles": "^2.4.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "rimraf": "^5.0.5",

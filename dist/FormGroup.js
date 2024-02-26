@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormGroup = void 0;
 const react_1 = __importStar(require("react"));
+require("./css/form-group.css");
 const FormGroup = ({ value, disabled, invalidMessage, onValueChange, quickForm, }) => {
     var _a;
     if (!quickForm || !quickForm.type) {

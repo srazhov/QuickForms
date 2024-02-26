@@ -35,6 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UniversalForm = void 0;
 const react_1 = __importStar(require("react"));
 const FormGroup_1 = require("./FormGroup");
+require("./css/universal-form.css");
 const UniversalForm = ({ className = "", formObject, setFormObject, onSubmitAsync, quickForms, allDisabled = false, needsValidation = false, clientValidationFunc, serverValidationFunc, children, }) => {
     if (!quickForms || !formObject || !setFormObject) {
         throw new Error("quickForms, formObject or setFormObject must not be undefined");

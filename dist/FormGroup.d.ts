@@ -1,5 +1,6 @@
 import React from "react";
 import { QuickForm } from "./QuickForm";
+import "./css/form-group.css";
 interface FormGroupProps {
     value: any;
     disabled: boolean;
