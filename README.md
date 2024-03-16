@@ -45,16 +45,16 @@ Create QuickForm object.
 
     const registerUserQuickForm = {
 	  userName: {
-		  type: 'text',
-		  placeholder: 'User Name'
+	    type: 'text',
+		placeholder: 'User Name'
 	  },
 	  password: {
-	  	  type: 'password',
-		  placeholder: 'Password'
+	  	type: 'password',
+		placeholder: 'Password'
 	  },
 	  repeatPassword: {
-	  	  type: 'password',
-		  placeholder: 'Repeat Password'
+	    type: 'password',
+	    placeholder: 'Repeat Password'
 	  }
     };
 
@@ -74,20 +74,19 @@ Values of the fields must be [QuickForm object](#quickforms-object)
 Example:
 
     const userQF = {
-	    userName: {
-			type: 'text'
-		},
-		password: {
-			type: 'password',
-			
-		}
+	  userName: {
+		type: 'text'
+	  },
+	  password: {
+		type: 'password',		
+	  }
     }; 
     
 	return (<UniversalForm
-		formObject={userObj}
-		quickForms={userQF}
-		setFormObject={setUserObj}>
-			<button type="submit">Press me</button>
+	  formObject={userObj}
+	  quickForms={userQF}
+	  setFormObject={setUserObj}>
+		<button type="submit">Press me</button>
 	</UniversalForm>);
 
 
@@ -110,13 +109,13 @@ Example:
 	// See below for implementation of these functions 
 	
 	return (<UniversalForm
-		formObject={userObj}
-		quickForms={userQF}
-		setFormObject={setUserObj}
-		needsValidation={true} // If false, ignore validation checks
-		clientValidationFunc={clientValidationFunc}
-		serverValidationFunc={serverValidationFunc}>
-			<button type="submit">Press me</button>
+	  formObject={userObj}
+	  quickForms={userQF}
+	  setFormObject={setUserObj}
+	  needsValidation={true} // If false, ignore validation checks
+	  clientValidationFunc={clientValidationFunc}
+	  serverValidationFunc={serverValidationFunc}>
+		<button type="submit">Press me</button>
 	</UniversalForm>);
 
 ## Validation
@@ -139,24 +138,24 @@ Value of those fields must be *string*. This string value is displayed as the er
 Example:
 
     const  clientValidationFunc = (testingObj) => {
-		const  errors = {};
-		if (!testingObj.userName) {
-			errors.userName = "UserName is required";
-		} else  if (testingObj.userName.length < 3) {
-			errors.userName = "Must be at least 3 characters";
-		}
+      const  errors = {};
+      if (!testingObj.userName) {
+	    errors.userName = "UserName is required";
+	  } else  if (testingObj.userName.length < 3) {
+	    errors.userName = "Must be at least 3 characters";
+	  }
 
-		return  errors; // Must return {key: 'value'} object 
-			where 'key'-s are the same as formObj's field names 
+	  return  errors; // Must return {key: 'value'} object 
+	    where 'key'-s are the same as formObj's field names 
 	};
 	
 	return (<UniversalForm
-		formObject={userObj}
-		quickForms={userQF}
-		setFormObject={setUserObj}
-		needsValidation={true} // If false, ignore validation checks
-		clientValidationFunc={clientValidationFunc}>
-			<button type="submit">Press me</button>
+	  formObject={userObj}
+	  quickForms={userQF}
+	  setFormObject={setUserObj}
+	  needsValidation={true} // If false, ignore validation checks
+	  clientValidationFunc={clientValidationFunc}>
+	    <button type="submit">Press me</button>
 	</UniversalForm>);
 
 ### serverValidationFunc
@@ -170,20 +169,20 @@ Value of those fields must be *string*. This string value is displayed as the er
 Example:
 
     const  serverValidationFunc = (serverErrors, formObj) => {
-		const serErr = serverErrors.response.data.errors; // Axios response object
-	    const errors = {};
-		Object.keys(serErr).map(err  =>  errors[err] = serErr[err][0]);
+	  const serErr = serverErrors.response.data.errors; // Axios response object
+      const errors = {};
+	  Object.keys(serErr).map(err  =>  errors[err] = serErr[err][0]);
 
-		return  errors;
+	  return  errors;
 	};
 	
 	return (<UniversalForm
-		formObject={userObj}
-		quickForms={userQF}
-		setFormObject={setUserObj}
-		needsValidation={true} // If false, ignore validation checks
-		serverValidationFunc={serverValidationFunc}>
-			<button type="submit">Press me</button>
+	  formObject={userObj}
+	  quickForms={userQF}
+	  setFormObject={setUserObj}
+	  needsValidation={true} // If false, ignore validation checks
+	  serverValidationFunc={serverValidationFunc}>
+		<button type="submit">Press me</button>
 	</UniversalForm>);
 
 In this case we just need to map server response to the default *errors* object.
