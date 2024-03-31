@@ -9,6 +9,21 @@ With **QuickForms** you can:
 [NpmJS Page](https://www.npmjs.com/package/universal-quick-forms)
 
 
+
+## To contributors
+
+This is my first public GitHub project, where I expect other people to use it. 
+
+It's not perfect, in fact, there are a lot of problems: the incomplete documentation (in progress), not totally correct tests, and I am not sure, if anyone ever will need this tool, though, I use it a lot in my projects.
+
+I don't know how exactly contributors work in GitHub, but if anyone would like to test my solution to automate React JS forms in their project, I'll be very happy to receive any issues reported or even fixing them.
+
+I'll update the README until the how-to section is finally finished.
+
+Thank you! 
+
+
+
 ## Table of Content
 - [Installation](#installation)
 - [How to use](#how-to-use)
@@ -33,15 +48,16 @@ In terminal you write:
 Package uses and is designed for ReactJS, so obviously, it's required to have it :)
 
 ## How to use
-Create form model
+Create [form model](#formobject)
+**Note**: It's important to use React's useState hook to work properly
 
-    const registerUserModel = {
+    const [registerUserModel, setRegisterUserModel] = useState({
       userName: ''
       password: ''
       repeatPassword: ''
-    };
+    });
 
-Create QuickForm object. 
+Create [QuickForm object](#quickforms-object)
 **Note**: every field of the QuickForm object must match the name of FormModel 
 
     const registerUserQuickForm = {
@@ -58,6 +74,16 @@ Create QuickForm object.
 	    placeholder: 'Repeat Password'
 	  }
     };
+
+Finally, call [UniversalForm.](#universalform)
+
+    return (<UniversalForm
+      formObject={registerUserModel}
+      quickForms={registerUserQuickForm}
+      setFormObject={setRegisterUserModel}>
+        <button type="submit">Press me</button>
+    </UniversalForm>);
+
 
 ## QuickForms object
 
