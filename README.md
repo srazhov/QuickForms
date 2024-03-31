@@ -5,6 +5,7 @@ With **QuickForms** you can:
  - Create your own components, which allow you to manage your data with complex structure
 
 [GitHub Page](https://github.com/srazhov/QuickForms)
+
 [NpmJS Page](https://www.npmjs.com/package/universal-quick-forms)
 
 
@@ -38,7 +39,7 @@ Create form model
       userName: ''
       password: ''
       repeatPassword: ''
-	};
+    };
 
 Create QuickForm object. 
 **Note**: every field of the QuickForm object must match the name of FormModel 
@@ -46,11 +47,11 @@ Create QuickForm object.
     const registerUserQuickForm = {
 	  userName: {
 	    type: 'text',
-		placeholder: 'User Name'
+	    placeholder: 'User Name'
 	  },
 	  password: {
-	  	type: 'password',
-		placeholder: 'Password'
+	    type: 'password',
+	    placeholder: 'Password'
 	  },
 	  repeatPassword: {
 	    type: 'password',
@@ -75,10 +76,10 @@ Example:
 
     const userQF = {
 	  userName: {
-		type: 'text'
+	    type: 'text'
 	  },
 	  password: {
-		type: 'password',		
+	    type: 'password',		
 	  }
     }; 
     
@@ -86,7 +87,7 @@ Example:
 	  formObject={userObj}
 	  quickForms={userQF}
 	  setFormObject={setUserObj}>
-		<button type="submit">Press me</button>
+	    <button type="submit">Press me</button>
 	</UniversalForm>);
 
 
@@ -115,7 +116,7 @@ Example:
 	  needsValidation={true} // If false, ignore validation checks
 	  clientValidationFunc={clientValidationFunc}
 	  serverValidationFunc={serverValidationFunc}>
-		<button type="submit">Press me</button>
+	    <button type="submit">Press me</button>
 	</UniversalForm>);
 
 ## Validation
@@ -140,23 +141,23 @@ Example:
     const  clientValidationFunc = (testingObj) => {
       const  errors = {};
       if (!testingObj.userName) {
-	    errors.userName = "UserName is required";
-	  } else  if (testingObj.userName.length < 3) {
-	    errors.userName = "Must be at least 3 characters";
-	  }
+        errors.userName = "UserName is required";
+      } else  if (testingObj.userName.length < 3) {
+        errors.userName = "Must be at least 3 characters";
+      }
 
-	  return  errors; // Must return {key: 'value'} object 
-	    where 'key'-s are the same as formObj's field names 
-	};
+      return  errors; // Must return {key: 'value'} object 
+        where 'key'-s are the same as formObj's field names 
+      };
 	
-	return (<UniversalForm
-	  formObject={userObj}
-	  quickForms={userQF}
-	  setFormObject={setUserObj}
-	  needsValidation={true} // If false, ignore validation checks
-	  clientValidationFunc={clientValidationFunc}>
-	    <button type="submit">Press me</button>
-	</UniversalForm>);
+      return (<UniversalForm
+        formObject={userObj}
+        quickForms={userQF}
+        setFormObject={setUserObj}
+        needsValidation={true} // If false, ignore validation checks
+        clientValidationFunc={clientValidationFunc}>
+          <button type="submit">Press me</button>
+      </UniversalForm>);
 
 ### serverValidationFunc
 In case if Server responded with "HTTP 400 Bad Request" and the response contains server model errors, you can display the server message to the user by using *serverValidationFunc* function.
@@ -169,21 +170,21 @@ Value of those fields must be *string*. This string value is displayed as the er
 Example:
 
     const  serverValidationFunc = (serverErrors, formObj) => {
-	  const serErr = serverErrors.response.data.errors; // Axios response object
+      const serErr = serverErrors.response.data.errors; // Axios response object
       const errors = {};
-	  Object.keys(serErr).map(err  =>  errors[err] = serErr[err][0]);
+      Object.keys(serErr).map(err  =>  errors[err] = serErr[err][0]);
 
-	  return  errors;
-	};
+      return  errors;
+    };
 	
-	return (<UniversalForm
-	  formObject={userObj}
-	  quickForms={userQF}
-	  setFormObject={setUserObj}
-	  needsValidation={true} // If false, ignore validation checks
-	  serverValidationFunc={serverValidationFunc}>
-		<button type="submit">Press me</button>
-	</UniversalForm>);
+    return (<UniversalForm
+      formObject={userObj}
+      quickForms={userQF}
+      setFormObject={setUserObj}
+      needsValidation={true} // If false, ignore validation checks
+      serverValidationFunc={serverValidationFunc}>
+        <button type="submit">Press me</button>
+    </UniversalForm>);
 
 In this case we just need to map server response to the default *errors* object.
 In the example above axios' *post* method is used. 
